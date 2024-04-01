@@ -17,6 +17,7 @@ cov19 = "^0.0.9"
 coverage = "^7.4.4"
 black = "^24.3.0"
 phonenumbers = "^8.13.33"
+requests = "^2.31.0"
 
 
 [build-system]
