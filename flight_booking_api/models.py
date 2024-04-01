@@ -22,3 +22,9 @@ class Booking(BaseModel):
     contact_details: ContactDetails
     flight_details: FlightDetails
     seat_pref: str = Field(min_length=2, max_length=2, description="Seat preference of the passenger", examples=["A1"], title="Seat Preference", pattern="^[A-Z][1-4]$")  # noqa
+
+
+class Responses(BaseModel):
+    status-code: int
+    data: dict
+    message: str
