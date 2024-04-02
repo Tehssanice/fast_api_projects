@@ -1,13 +1,13 @@
-from fastapi import APIRouter, HTTPException
-from services import book_event
-from models import BookingRequest
 
-router = APIRouter()
+from fastapi.responses import JSONResponse
+from fastapi import APIRouter
+from services import event_processing
+from models import BookingEvent
+
+router = APIRouter(prefix="/events")
 
 
-@router.post("/book-event/")
-async def book_event_endpoint(booking_request: BookingRequest):
-    try:
-        return book_event(booking_request)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+@router.post("/")
+async def book_event(event_booking: BookingEvent):
+    event_info = await event_processing(event_booking)
+    return JSONResponse(status_code=200, content={"data": event_info, "message": "Event booked"})

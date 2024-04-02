@@ -1,24 +1,16 @@
-from models import BookingRequest
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from models import BookingDB
+async def event_processing(event_booking):
+    """
+     Process the booking details, this is for the business logic
+     """
 
-Base = declarative_base()
+    event_info = {
 
-# Set up the database connection
-engine = create_engine('sqlite:///booking.db')
-Base.metadata.create_all(engine)
-Session = sessionmaker(bind=engine)
+        "client_name": event_booking.attendee_info.name,
+        "client_age": event_booking.attendee_info.age,
+        "client_email": event_booking.attendee_info.email,
+        "event_theme": event_booking.event_details.theme,
+        "event_date": event_booking.event_details.date.strftime("%Y-%m-%d")
 
+    }
 
-def save_booking(booking: BookingRequest):
-    # Create a new session and add the booking to it
-    session = Session()
-    db_booking = BookingDB(**booking.dict())
-    session.add(db_booking)
-
-    session.commit()
-    session.close()
-
-    return db_booking
+    return event_info
