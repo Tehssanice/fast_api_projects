@@ -3,13 +3,12 @@ from typing import Optional
 
 
 class Product(BaseModel):
-    id: int
     name: str
     category: str
     price: float
 
 
-class ProductSearchQuery(BaseModel):
+class ProductQueryParams(BaseModel):
     name: Optional[str]
     category: Optional[str]
     min_price: Optional[float]
