@@ -1,29 +1,32 @@
 from typing import List
-from models import Product, ProductSearchQuery
+from models import Product, ProductQueryParams
 
-# Dummy product data (replace with your actual product data)
-products = [
-    Product(id=1, name="Product 1", category="Category A", price=10.0),
-    Product(id=2, name="Product 2", category="Category B", price=20.0),
-    Product(id=3, name="Product 3", category="Category A", price=15.0),
-    Product(id=4, name="Product 4", category="Category C", price=25.0),
+# Dummy database
+fake_products_db = [
+    Product(name="Product A", category="Category A", price=10.0),
+    Product(name="Product B", category="Category B", price=15.0),
+    Product(name="Product C", category="Category A", price=20.0),
+    Product(name="Product D", category="Category C", price=25.0),
 ]
 
 
-def search_products(query: ProductSearchQuery) -> List[Product]:
-    result = products
+def search_products(params: ProductQueryParams) -> List[Product]:
+    filtered_products = fake_products_db
 
-    if query.name:
-        result = [p for p in result if query.name.lower() in p.name.lower()]
+    if params.name:
+        filtered_products = [
+            p for p in filtered_products if params.name.lower() in p.name.lower()]
 
-    if query.category:
-        result = [p for p in result if query.category.lower()
-                  in p.category.lower()]
+    if params.category:
+        filtered_products = [
+            p for p in filtered_products if params.category.lower() in p.category.lower()]
 
-    if query.min_price:
-        result = [p for p in result if p.price >= query.min_price]
+    if params.min_price:
+        filtered_products = [
+            p for p in filtered_products if p.price >= params.min_price]
 
-    if query.max_price:
-        result = [p for p in result if p.price <= query.max_price]
+    if params.max_price:
+        filtered_products = [
+            p for p in filtered_products if p.price <= params.max_price]
 
-    return result
+    return filtered_products
