@@ -1,5 +1,3 @@
-# routes.py
-
 from fastapi import APIRouter, Body, HTTPException
 from models import PaymentRequest
 from utils import validate_expiration_date, validate_numeric_fields

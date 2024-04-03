@@ -7,13 +7,13 @@ client = TestClient(app)
 
 def test_register_user():
     test_user_data = {
-        "username": "test_user",
+        "username": "testuser",
         "email": "test@example.com",
-        "password": "StrongPassword123!"
+        "password": "StrongPassword12@!"
     }
 
     # Send a POST request to the registration endpoint
-    response = client.post("/register/", json=test_user_data)
+    response = client.post("user/register/", json=test_user_data)
 
     assert response.status_code == 200
     assert response.json() == test_user_data
