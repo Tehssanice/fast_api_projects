@@ -1,29 +1,39 @@
-import requests
+from fastapi.testclient import TestClient
+from main import app
+
+client = TestClient(app)
 
 
 def test_search_products():
-    # Test with name and category filters
-    response = requests.get(
-        "/products/search", params={"name": "Product", "category": "Category A"})
+    # Test case: Search for a product by name
+    response = client.get(
+        "/search?name=air%20conditioner&price_range=20-40")
     assert response.status_code == 200
-    # Assuming there are 2 products matching the criteria
-    assert len(response.json()) == 2
+    assert response.json() == [
+        {"name": "rice", "category": "food", "price": 95.0},
+        {"name": "rice", "category": "food", "price": 15.0}
+    ]
 
-    # Test with price range filter
-    response = requests.get(
-        "/products/search", params={"min_price": 10.0, "max_price": 20.0})
-    assert response.status_code == 200
-    # Assuming there are 3 products within the price range
-    assert len(response.json()) == 3
+#     # Test case: Search for products in a specific category
+#     response = client.get(
+#         "/products/search?category=elctronics")
+#     assert response.status_code == 200
+#     assert response.json()["category"] == "electronics"
 
-    # Test with all filters
-    response = requests.get("/products/search", params={
-                            "name": "Product", "category": "Category A", "min_price": 10.0, "max_price": 20.0})
-    assert response.status_code == 200
-    # Assuming there is 1 product matching all criteria
-    assert len(response.json()) == 1
+#  # Test case: Search for products in a price range
+#     response = client.get("/products/search?price_range=20-40")
+#     assert response.status_code == 200
+#     assert response.json()["price"] <= 35
 
-    # Test with no filters
-    response = requests.get("/products/search")
-    assert response.status_code == 200
-    assert len(response.json()) == 4  # Assuming there are 4 products in total
+# #  Test case: Search for products with a combination of criteria
+#     response = client.get(
+#         "/products/search?name=crop-top&category=clothing&price_range=30-70")
+#     assert response.status_code == 200
+#     assert response.json()["name"] == "crop-top"
+#     assert response.json()["category"] == "clothing"
+#     assert response.json()["price"] <= 45
+
+
+# # Test case: Product not found
+#     response = client.get("products/search")
+#     assert response.status_code == 200

@@ -1,15 +1,2 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional
-
-
-class Product(BaseModel):
-    name: str
-    category: str
-    price: float
-
-
-class ProductQueryParams(BaseModel):
-    name: Optional[str]
-    category: Optional[str]
-    min_price: Optional[float]
-    max_price: Optional[float]

@@ -1,34 +1,33 @@
 from fastapi import APIRouter, Query
-from models import Product, ProductQueryParams
 
 router = APIRouter()
 
 fake_products_db = [
-    Product(name="Product A", category="Category A", price=10.0),
-    Product(name="Product B", category="Category B", price=15.0),
-    Product(name="Product C", category="Category A", price=20.0),
-    Product(name="Product D", category="Category C", price=25.0),
+    {"name": "air conditioner", "category": "electronics", "price": 50.0},
+    {"name": "mobile phone", "category": "electronics", "price": 80.0},
+    {"name": "crop-top", "category": "clothing", "price": 25.0},
+    {"name": "rice", "category": "food", "price": 95.0},
+    {"name": "air conditioner", "category": "electronics", "price": 30.0},
+    {"name": "rice", "category": "food", "price": 15.0}
+
 ]
 
 
 @router.get("/search")
-async def search_products(params: ProductQueryParams = Query(...)):
-    filtered_products = fake_products_db
+async def search_product(name: str = Query(None, description="The name of the product"), category: str = Query(None), price_range: str = Query("0-100")):
 
-    if params.name:
-        filtered_products = [
-            p for p in filtered_products if params.name.lower() in p.name.lower()]
+    searched_products = []
 
-    if params.category:
-        filtered_products = [
-            p for p in filtered_products if params.category.lower() in p.category.lower()]
+    min_price, max_price = map(float, price_range.split("-"))
 
-    if params.min_price:
-        filtered_products = [
-            p for p in filtered_products if p.price >= params.min_price]
+    for product in fake_products_db:
+        if product['name'] == name:
+            searched_products.append(product)
 
-    if params.max_price:
-        filtered_products = [
-            p for p in filtered_products if p.price <= params.max_price]
+        if product["category"] == category:
+            searched_products.append(product)
 
-    return filtered_products
+        # if min_price <= product["price"] <= max_price:
+        #     searched_products.append(product)
+
+    return searched_products

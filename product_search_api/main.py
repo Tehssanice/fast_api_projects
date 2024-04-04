@@ -3,4 +3,4 @@ from routes import router as product_router
 
 app = FastAPI()
 
-app.include_router(product_router, prefix="/products", tags=["products"])
+app.include_router(product_router, prefix="/products")
