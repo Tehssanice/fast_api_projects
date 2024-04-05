@@ -27,7 +27,7 @@ async def search_product(name: str = Query(None, description="The name of the pr
         if product["category"] == category:
             searched_products.append(product)
 
-        # if min_price <= product["price"] <= max_price:
-        #     searched_products.append(product)
+        if min_price <= product["price"] <= max_price:
+            searched_products.append(product)
 
     return searched_products
